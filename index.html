@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Clicker Game</title>
+  <!-- Include p5.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.min.js"></script>
+</head>
+<body>
+  <!-- Your sketch will go here -->
+  <script>
+let scale = 2;
+function setup() {
+  createCanvas(400 * scale, 400 * scale);
+  frameRate(50);
+}
+
+let superCoin = 2
+let coin = false;
+let clicker = 100;
+let money = 0;
+let count = 0;
+let amount = 1;
+let cooldown = 50;
+let cooldownCost = 100000000000;
+let chance = 60;
+let chanceCost = 1000000;
+let hundreddolcost = 100000;
+let fiftydolcost = 50000;
+let twentydolcost = 20000;
+let tendolcost = 10000;
+let fivedolcost = 5000;
+let twodolcost = 2000;
+let dolCost = 1000;
+let halfdolCost = 500;
+let quarterCost = 250;
+let dimeCost = 100;
+let nickelCost = 50;
+let pennyCost = 10;
+
+function draw() {
+  background(0, 0, 0);
+  noStroke();
+  superCoin = floor(random(1, 61));
+
+  // Super coin
+  if (coin) {
+    fill(244, 252, 0);
+    ellipse(100 * scale, 300 * scale, 20 * scale, 20 * scale);
+    if (mouseIsPressed && mouseX > 90 * scale && mouseX < 110 * scale && mouseY < 310 * scale  && mouseY > 290 * scale) {
+      amount *= 2;
+      coin = false;
+    }
+  }
+
+  // Clicker
+  fill(255, 255, 0);
+  ellipse(100 * scale, 100 * scale, clicker * scale, clicker * scale);
+  fill(0);
+  textSize(50 * scale);
+  text("$", 86 * scale, 83 * scale, 50 * scale, 50 * scale);
+
+  // Stats
+  fill(255, 0, 0);
+  textSize(20);
+  text("you have $" + Math.round(money * 100) / 100, 13 * scale, 28 * scale);
+  text("you make $" + Math.round(amount * 100) / 100 + " per second", 9 * scale, 45 * scale);
+  text("your super coin chance is: " + chance, 31 * scale, 200 * scale, 100 * scale, 98 * scale);
+
+  if (mouseIsPressed && mouseX < 150 * scale && mouseY < 150 * scale && count % 10 === 1) {
+    money += amount;
+    clicker -= 10;
+    if (clicker === 80) clicker = 90;
+  }
+
+  if (!mouseIsPressed && count % 10 === 2) {
+    clicker += 10;
+    if (clicker === 110) clicker = 100;
+  }
+
+  count++;
+  textSize(10 * scale);
+  // Chance button
+  fill(255, 0, 0);
+  rect(0, 350 * scale, 50 * scale, 50 * scale);
+  fill(0);
+  textSize(7 * scale);
+  text("chance for super coin increase costs: $" + chanceCost, 4 * scale, 356 * scale, 50 * scale, 50 * scale);
+  if (mouseIsPressed && mouseX < 50 * scale && mouseY > 350 * scale && money >= chanceCost && chance > 2) {
+    chance -= 5;
+    money -= chanceCost;
+    chanceCost += 100000;
+  }
+  if (chance < 2){
+    chance = 2;
+  } 
+  // Cooldown button
+  fill(255, 0, 0);
+  rect(50 * scale, 350 * scale, 50 * scale, 50 * scale);
+  fill(0);
+  textSize(7 * scale);
+  text("cooldown for super coin decrease for: " + cooldownCost, 51 * scale, 357 * scale, 50 * scale, 50 * scale);
+  if (mouseIsPressed && mouseX > 50 * scale && mouseX < 100 * scale && mouseY > 350 * scale && mouseY < 400 * scale && money >= cooldownCost && count % 10 === 1) {
+    if (cooldownCost < 190000000000) {
+      money -= cooldownCost;
+      cooldown -= 5;
+      cooldownCost += 10000000000;
+    }
+  }
+
+  textSize(10 * scale);
+
+  // Penny
+  fill(250, 105, 105);
+  rect(250 * scale, 100 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("penny: plus 0.01 for $" + pennyCost, 255 * scale, 105 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 100 * scale && mouseY < 125 * scale && money >= pennyCost && count % 10 === 1) {
+    money -= pennyCost;
+    amount += 0.01;
+    pennyCost++;
+  }
+
+  // Nickel
+  fill(71, 71, 71);
+  rect(250 * scale, 125 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("nickel: plus 0.05 for $" + nickelCost, 255 * scale, 130 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 125 * scale && mouseY < 150 * scale && money >= nickelCost && count % 10 === 1) {
+    money -= nickelCost;
+    amount += 0.05;
+    nickelCost += 5;
+  }
+
+  // Dime
+  fill(148, 148, 148);
+  rect(250 * scale, 150 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("dime: plus 0.1 for $" + dimeCost, 255 * scale, 155 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 150 * scale && mouseY < 175 * scale && money >= dimeCost && count % 10 === 1) {
+    money -= dimeCost;
+    amount += 0.1;
+    dimeCost += 10;
+  }
+
+  // Quarter
+  fill(191, 191, 191);
+  rect(250 * scale, 175 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("quarter: plus 0.25 for $" + quarterCost, 255 * scale, 180 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 175 * scale && mouseY < 200 * scale && money >= quarterCost && count % 10 === 1) {
+    money -= quarterCost;
+    amount += 0.25;
+    quarterCost += 25;
+  }
+
+  // Half dollar
+  fill(255, 255, 255);
+  rect(250 * scale, 200 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("half $: plus 0.5 for $" + halfdolCost, 255 * scale, 205 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 200 * scale && mouseY < 225 * scale && money >= halfdolCost && count % 10 === 1) {
+    money -= halfdolCost;
+    amount += 0.5;
+    halfdolCost += 50;
+  }
+
+  // Dollar
+  fill(197, 207, 50);
+  rect(250 * scale, 225 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("$ coin: plus 1$ for $" + dolCost, 255 * scale, 230 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 225 * scale && mouseY < 250 * scale && money >= dolCost && count % 10 === 1) {
+    money -= dolCost;
+    amount += 1;
+    dolCost += 100;
+  }
+
+  // 2 Dollar
+  fill(0, 105, 5);
+  rect(250 * scale, 250 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("2$ bill: plus 2$ for $" + twodolcost, 255 * scale, 255 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 250 * scale && mouseY < 275 * scale && money >= twodolcost && count % 10 === 1) {
+    money -= twodolcost;
+    amount += 2;
+    twodolcost += 200;
+  }
+
+  // 5 Dollar
+  fill(0, 122, 4);
+  rect(250 * scale, 275 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("5$ bill: plus 5$ for $" + fivedolcost, 255 * scale, 280 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 275 * scale && mouseY < 300 * scale && money >= fivedolcost && count % 10 === 1) {
+    money -= fivedolcost;
+    amount += 5;
+    fivedolcost += 500;
+  }
+
+  // 10 Dollar
+  fill(6, 145, 10);
+  rect(250 * scale, 300 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("10$ bill: plus 10$ for $" + tendolcost, 255 * scale, 305 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 300 * scale && mouseY < 325 * scale && money >= tendolcost && count % 10 === 1) {
+    money -= tendolcost;
+    amount += 10;
+    tendolcost += 1000;
+  }
+
+  // 20 Dollar
+  fill(0, 166, 6);
+  rect(250 * scale, 325 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("20$ bill: plus 20$ for $" + twentydolcost, 255 * scale, 330 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 325 * scale && mouseY < 350 * scale && money >= twentydolcost && count % 10 === 1) {
+    money -= twentydolcost;
+    amount += 20;
+    twentydolcost += 2000;
+  }
+
+  // 50 Dollar
+  fill(4, 186, 10);
+  rect(250 * scale, 350 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  text("50$ bill: plus 50$ for $" + fiftydolcost, 255 * scale, 355 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 350 * scale && mouseY < 375 * scale && money >= fiftydolcost && count % 10 === 1) {
+    money -= fiftydolcost;
+    amount += 50;
+    fiftydolcost += 5000;
+  }
+
+  // 100 Dollar
+  fill(0, 255, 9);
+  rect(250 * scale, 375 * scale, 150 * scale, 25 * scale);
+  fill(0);
+  textSize(17.5)
+  text("100$ bill: plus 100$ for $" + hundreddolcost, 255 * scale, 380 * scale, 140 * scale, 20 * scale);
+  if (mouseIsPressed && mouseX > 250 * scale && mouseX < 400 * scale && mouseY > 375 * scale && mouseY < 400 * scale && money >= hundreddolcost && count % 10 === 1) {
+    money -= hundreddolcost;
+    amount += 100;
+    hundreddolcost += 10000;
+  }
+
+  // Super coin chance
+  if (count % cooldown === 1) {
+    superCoin = floor(random(1, chance + 1));
+    if (superCoin === 1) coin = true;
+  }
+
+  money += amount / 50;
+}
+  </script>
+</body>
+</html>
